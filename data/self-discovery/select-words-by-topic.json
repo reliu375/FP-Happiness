@@ -1,0 +1,10 @@
+{"entertainment" : ["game","movie","books", "show", "video"],
+ "exercise" : ["gym", "walk", "running", "pool", "bike", "team", "hike"],
+ "family": ["son","husband","home","daughter","family","sister","girlfriend","wife", "mom", "baby"],
+ "food": ["food","restaurant", "chicken", "coffee", "cake"],
+ "people" : ["love","visit","friend","birthday"],
+ "pets" : ["dog", "cat", "bird"],
+ "school":["school", "college"],
+ "shopping":["shopping", "grocery", "store", "clothes","car"],
+ "work":["money","job","work", "promotion"],
+ }

@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>what made you happy today?</title>
+
+  <!-- Import jQuery CDN  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Import D3 -->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
+  <script src="scripts/d3-format.js"></script>
+  <!-- Import CSV data management packages-->
+  <script src="https://d3js.org/d3-dsv.v1.min.js" ></script>
+  <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+
+  <!-- Import Moving Letters -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+
+  <!-- Import Word Cloud Stuff -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/lib/alea.min.js"></script>
+
+  <!-- Import Boostrap -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <!-- Import Sortable for Drag & Drop Sorting List -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+  <!-- Sticky Note Font -->
+  <link href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
+
+  <!-- Load Personal CSS -->
+  <link rel="stylesheet" href="css/styles.css" crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="container">
+  <div id='graphic'>
+    <div id='sections'>
+      <!-- Heading section-->
+      <section id="section-heading" class="step visible">
+          <h1 id="main-title" class="ml16">what made you happy today?</h1>
+          <p class="lead">Scroll down to let us know.</p>
+      </section>
+
+      <!-- Section: User Happy Moment-->
+      <section id ="section-user-hp" class="step">
+        <div class="jumbotron">
+        <form>
+          <!-- Happy Moment Textarea -->
+          <div class="form-group">
+            <label for="textarea" class="lead">
+              What made you happy today? </br>
+              Reflect on the past 24 hours, and recall an event that happened to you that made you happy. </br>
+              Write down your happy moment in a complete sentence.</br>
+              (Your responses will not be stored.)
+            </label>
+
+            <textarea class="form-control" id="user-happy-moment" rows="5"></textarea>
+          </div>
+          <!-- Category selection -->
+          <div class="form-group">
+            <p class="lead">Select a category for your happy moment.</p>
+            <figure>
+              <img onclick="setCategory(this.id)" id="affection" src="./css/icons/heart-solid.svg" class="icon" height="90" width="90">
+                <figcaption>affection</figcaption>
+            </figure>
+            <figure>
+              <img onclick="setCategory(this.id)" id="achievement" src="./css/icons/trophy-solid.svg" class="icon" height="90" width="90">
+                <figcaption>achievement</figcaption>
+            </figure>
+            <figure>
+              <img onclick="setCategory(this.id)" id="enjoy_the_moment" src="./css/icons/cocktail-solid.svg" class="icon" height="90" width="90">
+                <figcaption style="padding-left:20px">enjoy the moment</figcaption>
+            </figure>
+            <figure>
+              <img onclick="setCategory(this.id)" id="bonding" src="./css/icons/users-solid.svg" class="icon" height="90" width="90">
+                <figcaption>bonding</figcaption>
+            </figure>
+            <figure>
+              <img onclick="setCategory(this.id)" id="leisure" src="./css/icons/book-open-solid.svg" class="icon" height="90" width="90">
+                <figcaption>leisure</figcaption>
+            </figure>
+            <figure>
+              <img onclick="setCategory(this.id)" id="nature" src="./css/icons/leaf-solid.svg" class="icon" height="90" width="90">
+                <figcaption>nature</figcaption>
+            </figure>
+            <figure>
+              <img onclick="setCategory(this.id)" id="exercise" src="./css/icons/dumbbell-solid.svg" class="icon" height="90" width="90">
+                <figcaption>exercise</figcaption>
+            </figure>
+          </div>
+
+          <a href="#section-user-demographics">
+            <button onclick="getUserHappyMoment()" type="button" class="btn btn-dark" id="get-user-happy-moment">
+              Submit
+            </button>
+          </a>
+        </form>
+      </div>
+      </section>
+
+      <!-- Section: Input User Demographics -->
+      <section id="section-user-demographics" class="step" >
+
+        <div class="jumbotron">
+        <form>
+          <p class="lead">Please enter your demographics.</p>
+
+          <!-- Country -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="country-user">country:</label>
+            <select class="form-control col-sm-10" id="country-user">
+              <option value="AUS">Australia</option>
+              <option value="BRA">Brazil</option>
+              <option value="CAN">Canada</option>
+              <option value="IND">India</option>
+              <option value="MEX">Mexico</option>
+              <option value="NGA">Nigeria</option>
+              <option value="USA">USA</option>
+              <option value="GBR">United Kingdom</option>
+              <option value="VEN">Venezuela</option>
+              <option value="PHL">Philippines</option>
+              <!-- TODO: other -->
+              <!-- <option value="o">other country</option> -->
+            </select>
+          </div>
+
+          <!-- Gender -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="gender-user">gender:</label>
+            <select class="form-control col-sm-10" id="gender-user">
+              <option value="f">female</option>
+              <option value="m">male</option>
+              <option value="o">other gender</option>
+            </select>
+          </div>
+
+          <!-- Marital Status -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="marital-status-user">marital status:</label>
+            <select class="form-control col-sm-10" id="marital-status-user">
+              <option value="single">single</option>
+              <option value="married">married</option>
+              <option value="divorced">divorced</option>
+              <option value="separated">separated</option>
+              <option value="widowed">widowed</option>
+              <option>
+            </select>
+          </div>
+
+          <!-- Parenthood Status -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="parenthood-user">parenthood:</label>
+            <select class="form-control col-sm-10" id="parenthood-user">
+              <option value="n">not a parent</option>
+              <option value="y">parent</option>
+            </select>
+          </div>
+
+          <!-- Age -->
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="age-user">Age:</label>
+            <select class="form-control col-sm-10" id="age-user">
+              <!-- value is lower limit of age group -->
+              <option value="0">0-10</option>
+              <option value="10">11-20</option>
+              <option value="20">21-30</option>
+              <option value="30">31-40</option>
+              <option value="40">41-50</option>
+              <option value="50">51-60</option>
+              <option value="60">61-70</option>
+              <option value="70">71-80</option>
+              <option value="80">81-90</option>
+              <option value="90">91-100</option>
+            </select>
+          </div>
+        <p class="text-muted font-weight-light">
+          *For fields selected as "other",your results in the next section will base on the overall data of that field.
+          For exaple, if 'gender' is set to 'other', results will be based on data from both male and female.
+        </p>
+
+        <a href="#section-user-results">
+          <button onclick="showUserResults()" type="button" class="btn btn-dark" id="user-demographic">
+            Submit
+          </button>
+        </a>
+        </form>
+      </section>
+
+      <!-- Section: User Happy Moment Analysis -->
+      <section id="section-user-results" class="step">
+
+        <p style="padding-top: 50px;" class="lead">
+          Thanks for sharing your happy moment. <br>
+          <!-- After comparing your happy moment to our dataset, we found that you shared the same diction with many people to describe happiness. <br> -->
+          Underlined words in your happy moment are among top key words used to describe all happy moments. <br>
+          If you see no underlined words, your moment was truly unique in its diction! <br>
+        </p>
+
+        <div class="note" id="result-userHp-note">
+          <!-- TODO: set innerHTML here -->
+          <img id="noteIcon" src="" class="icon" height="90" width="90">
+          <div class="lead" id="result-userHp-cat" style="margin-right: 10px; margin-left: 10px; font-size: large;"></div>
+          <p class="lead" id="result-userHp-p"></p>
+        </div>
+      </section>
+
+      <!-- Section: HappyDB Intro -->
+      <section class="step">
+        <h1 style="padding:40px">About the Dataset</h1>
+
+        <p class="lead">This narrative uses data from HappyDB.
+          HappyDB is a corpus of 100,000+ happy moments collected by researchers at Meganon Labs.
+          Researchers used Amazon's Mechanical Turk to collect responses to the question: "What made you happy today?".
+          More information can be found on Megagon's website
+          <a href="https://megagon.ai/projects/happydb-a-happiness-database-of-100000-happy-moments/">here</a>.</p>
+
+        <p class="lead">Scroll down to explore the dataset.</p>
+
+      </section>
+
+      <!-- Section 4: HappyDB Demographics -->
+      <section class="step">
+        <!-- Demographics Text -->
+        <div class="demographics">
+          <h1> Demographics </h1>
+          <h2 class="lead">Who makes up our data?<br>
+          Hover over the icons below to see which demographics submit the most happy moments. </h2>
+          <figure>
+              <!-- <input type="image" src="./css/images/country.png" id="country" alt="unclicked" class="icon" onclick="toggle(this)" onmouseover="displayChart(this)"> -->
+              <img src="./css/images/country.png" alt="country" class="icon" onmouseover="displayChart(event)" onmouseout="hideChart(event)">
+              <figcaption> country </figcaption>
+          </figure>
+          <figure>
+            <img src="./css/images/gender.png" alt="gender" class="icon" onmouseover="displayChart(event)" onmouseout="hideChart(event)">
+            <figcaption> gender </figcaption>
+          </figure>
+          <figure>
+            <img src="./css/images/married.png" alt="marital" class="icon" onmouseover="displayChart(event)" onmouseout="hideChart(event)">
+            <figcaption> marital status </figcaption>
+          </figure>
+          <figure>
+            <img src="./css/images/kids.png" alt="parenthood" class="icon" onmouseover="displayChart(event)" onmouseout="hideChart(event)">
+            <figcaption> parenthood </figcaption>
+          </figure>
+          <figure>
+            <img src="./css/images/age.png" alt="age" class="icon" onmouseover="displayChart(event)" onmouseout="hideChart(event)">
+            <figcaption> age </figcaption>
+          </figure>
+        </div>
+
+        <!-- Demographics Bar Chart -->
+        <form action="" id="scaleToggle" method="post" style="text-align: right; padding-top: 30px;">
+          <input type="radio" name="scaleType" checked="checked" value="Linear" /> Linear
+          <input type="radio" name="scaleType" value="Logarithmic" /> Logarithmic
+        </form>
+        <div id="demographicsChart" class="hideChart" style="width: 100%; height: 600px;">
+          <script>
+
+          </script>
+        </div>
+      </section>
+
+      <!-- Section 5: Our Discoveries -->
+      <section class="step">
+        <div id="cloud-container">
+          <h1> Word Cloud </h1>
+          <p class="lead">What kind of words do people like to use when they write about their happy moments?
+          <br>Pick a topic below, and you will see a word cloud showing the most frequently used words for happy moments to the
+                          topic of your choice.
+          <br>You can hover over a specific word to see its frequency within the corpus, filtered by the topic of your choice, as well as
+              a sample moment using that word within your chosen category.</p>
+          <script type="text/javascript">
+            window.addEventListener("load",function(){
+              generate({
+              container: '#cloud-container',});
+            },false);
+          </script>
+          <label for="topics">Choose a topic:</label>
+          <select id="topics" onchange="generate({
+            container: '#cloud-container',});">
+            <option selected="selected" value="all">All Topics</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="exercise">Exercise</option>
+            <option value="family">Family</option>
+            <option value="food">Food</option>
+            <option value="people">People</option>
+            <option value="pets">Pets</option>
+            <option value="school">School</option>
+            <option value="shopping">Shopping</option>
+            <option value="work">Work</option>
+          </select> <br><br>
+          <div class="lead" id="wordCloudMoment" style="width: 100%; height: 60px; overflow: scroll; font-style: italic;"></div>
+            <!-- <button type="button" id="button" onclick="generate({
+              container: '#cloud-container',
+              topic: 'school'
+            });">show</button> -->
+        </div>
+      </section>
+
+      <!-- Section: Self-Discovery -->
+      <section class="step" style="width: 100%; height: 900px;">
+        <h1>Self Discovery</h1>
+        <p class="lead">Let's talk about what makes you happy, from day to day.</p>
+
+        <div style="padding-top:40px;" class="container">
+          <div class="row">
+            <!-- Col 1 : Rank categories preference -->
+            <div id="rank-categories" class="col-sm-3">
+              <p class="lead">
+                <b style="font-size: x-large; color:orangered;">(Step 1)</b>
+                How happy does each category make you?
+                <strong>Drag & drop</strong> the categories to rank them from top to bottom, in order of most to least happy.
+                (We will show you moments from your top 3 categories.)
+              </p>
+
+              <ul id="categories-rank-list" class="list-group">
+
+              	<li class="list-group-item" id="self_affection" data-id="affection" style="background-color: rgba(216, 112, 147, 0.8);">affection</li>
+                <li class="list-group-item" id="self_achievement" data-id="achievement" style="background-color: rgba(250, 250, 210, 1.0);">achievement</li>
+                <li class="list-group-item" id="self_enjoy_the_moment" data-id="enjoy_the_moment" style="background-color: rgba(221, 160, 211, 0.8);">enjoy the moment</li>
+                <li class="list-group-item" id="self_bonding" data-id="bonding" style="background-color:rgba(32, 178, 170, 0.6);">bonding</li>
+                <li class="list-group-item" id="self_leisure" data-id="leisure" style="background-color: rgba(176, 224, 230, 0.8);">leisure</li>
+                <li class="list-group-item" id="self_nature" data-id="nature" style="background-color: rgba(144, 238, 144, 0.6);">nature</li>
+                <li class="list-group-item" id="self_exercise" data-id="exercise" style="background-color: rgba(255, 160, 122, 0.7);">exercise</li>
+              </ul>
+            </div>
+            <!-- Col 2: Choose words from word cloud-->
+            <div id="choose-words" class="col-sm-9">
+              <p class="lead"><b style="font-size: x-large; color:orangered; ">(Step 2)</b> Choose <strong><u>5</u></strong> words from the word cloud that spark joy. Click on a word to select it.</p>
+              <button onclick="generateSD({container: '#choose-words'});" type="button" class="btn btn-dark" id="user-self-demographic" style="color:white">
+                Generate Word Cloud
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit button  -->
+        <p class="lead">Done? Click the Submit button to see happy moments from the database that match your selections.</p>
+        <a  href="#section-self-discovery-results">
+          <button onclick="showSDResults()" type="button" class="btn btn-dark" id="show-self-discovery">
+            Submit
+          </button>
+        </a>
+      </section>
+
+      <!-- Section: Self-Discovery Sticky Notes -->
+      <section id="section-self-discovery-results" class="step" style="width: 100%; height: 900px">
+        <br><br><br><br><br><br>
+        <h2>Here are moments we found based on what makes you happy.</h2>
+        <p class="lead">When you read these happy moments, how do you feel?</p>
+        <p class="lead">Do they also spark joy in you?</p>
+
+        <!-- TODO: See more moments button -->
+        <button onclick="showSDResults()" type="button" class="btn btn-dark" id="sd-see-more-moments">
+          See More Moments
+        </button>
+
+        <div id="selfDiscoveryStickies" style="width: 100%; border-radius: 5px;">
+          <ul>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground5">
+                <!-- <h2 id="categorySelfSticky5"></h2> -->
+                <p id="selfSticky5"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground4">
+                <!-- <h2 id="categorySelfSticky4"></h2> -->
+                <p id="selfSticky4"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground3">
+                <!-- <h2 id="categorySelfSticky3"></h2> -->
+                <p id="selfSticky3"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground2">
+                <!-- <h2 id="categorySelfSticky2"></h2> -->
+                <p id="selfSticky2"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground1">
+                <!-- <h2 id="categorySelfSticky1"></h2> -->
+                <p id="selfSticky1"></p>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground10">
+                <!-- <h2 id="categorySelfSticky10"></h2> -->
+                <p id="selfSticky10"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground9">
+                <!-- <h2 id="categorySelfSticky9"></h2> -->
+                <p id="selfSticky9"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground8">
+                <!-- <h2 id="categorySelfSticky8"></h2> -->
+                <p id="selfSticky8"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground7">
+                <!-- <h2 id="categorySelfSticky7"></h2> -->
+                <p id="selfSticky7"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground6">
+                <!-- <h2 id="categorySelfSticky6"></h2> -->
+                <p id="selfSticky6"></p>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground15">
+                <!-- <h2 id="categorySelfSticky15"></h2> -->
+                <p id="selfSticky15"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground14">
+                <!-- <h2 id="categorySelfSticky14"></h2> -->
+                <p id="selfSticky14"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground13">
+                <!-- <h2 id="categorySelfSticky13"></h2> -->
+                <p id="selfSticky13"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground12">
+                <!-- <h2 id="categorySelfSticky12"></h2> -->
+                <p id="selfSticky12"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink" id="categoryStickyBackground11">
+                <!-- <h2 id="categorySelfSticky11"></h2> -->
+                <p id="selfSticky11"></p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section: Reader-driven exploration -->
+      <section class="step">
+        <div id="data_exploration" style="display: block; height: 1000px;">
+          <h1> Explore our Happy Moments </h1>
+          <h3 class="lead"> Most people find happiness in life's smallest moments. <br><br>
+                            Hover over the categories below to see an example of what might make someone happy. <br>
+               Click to filter happy moments by that category. <br>
+          </h3><br>
+          <table cellpadding="10">
+            <tr>
+            </tr>
+            <tr>
+              <th id="exerciseColor" style="background-color: lightsalmon;">
+                <p class="lead"><b>Exercise</b></p>
+                <div class="graphicContainer">
+                <a href="#data_exploration_results" style="color:white">
+                <img alt="exercise" style="cursor: pointer;" class="holly_img" onmouseover="displayExploreData(event)" onmouseout="hideExploreData(event)" onclick="loadExplorationData(event)" src="css/images/exercise.jpg">
+                <mark style="visibility: hidden;" id="exerciseLabel" class="lead overlay"><i>"doing yoga this morning was so calming"</i></mark>
+                </a>
+              </div>
+              </th>
+              <th id="enjoy_the_momentColor" style="background-color: plum;">
+                <p class="lead"><b>Enjoy the Moment</b></p>
+                <div class="graphicContainer">
+                <a href="#data_exploration_results" style="color:white">
+                <img alt="enjoy_the_moment" style="cursor: pointer;" class="holly_img" onmouseover="displayExploreData(event)" onmouseout="hideExploreData(event)" onclick="loadExplorationData(event)" src="css/images/enjoy_the_moment.jpg">
+                <mark style="visibility: hidden;" id="enjoy_the_momentLabel" class="lead overlay"><i>"i sang my heart out in the shower today"</i></mark>
+                </a>
+              </div>
+              </th>
+              <th id="bondingColor" style="background-color: lightseagreen;">
+                <p class="lead"><b>Bonding</b></p>
+                <div class="graphicContainer">
+                <a href="#data_exploration_results" style="color:white">
+                <img alt="bonding" style="cursor: pointer;" class="holly_img" onmouseover="displayExploreData(event)" onmouseout="hideExploreData(event)" onclick="loadExplorationData(event)" src="css/images/bonding.jpg">
+                <mark style="visibility: hidden;" id="bondingLabel" class="lead overlay"><i>"i made plans to see a new movie with friends this weekend"</i></mark>
+                </a>
+                </div>
+              </th>
+              <th id="achievementColor" style="background-color: lightgoldenrodyellow;">
+                <p class="lead"><b>Achievement</b></p>
+                <div class="graphicContainer">
+                <a href="#data_exploration_results" style="color:white">
+                <img alt="achievement" style="cursor: pointer;" class="holly_img" onmouseover="displayExploreData(event)" onmouseout="hideExploreData(event)" onclick="loadExplorationData(event)" src="css/images/achievement.jpg">
+                <mark style="visibility: hidden;" id="achievementLabel" class="lead overlay"><i>"my boss told me that my proposal was creative and innovative"</i></mark>
+                </a>
+              </div>
+              </th>
+            </tr>
+          </table>
+          <table cellpadding="10">
+            <tr>
+              <th id="natureColor" style="background-color: lightgreen;">
+                <p class="lead"><b>Nature</b></p>
+                <div class="graphicContainer">
+                <a href="#data_exploration_results" style="color:white">
+                <img alt="nature" style="cursor: pointer;" class="holly_img" onmouseover="displayExploreData(event)" onmouseout="hideExploreData(event)" onclick="loadExplorationData(event)" src="css/images/nature.jpg">
+                <mark style="visibility: hidden;" id="natureLabel" class="lead overlay"><i>"biking through the parks was so relaxing today"</i></mark>
+                </a>
+                </div>
+              </th>
+              <th id="affectionColor" style="background-color: palevioletred;">
+                <p class="lead"><b>Affection</b></p>
+                <div class="graphicContainer">
+                <a href="#data_exploration_results" style="color:white">
+                <img alt="affection" style="cursor: pointer;" class="holly_img" onmouseover="displayExploreData(event)" onmouseout="hideExploreData(event)" onclick="loadExplorationData(event)" src="css/images/affection.jpg">
+                <mark style="visibility: hidden;" id="affectionLabel" class="lead overlay"><i>"my boyfriend took me on a romantic date last night"</i></mark>
+                </a>
+                </div>
+              </th>
+              <th id="leisureColor" style="background-color: powderblue;">
+                <p class="lead"><b>Leisure</b></p>
+                <div class="graphicContainer">
+                <a href="#data_exploration_results" style="color:white">
+                <img alt="leisure" style="cursor: pointer;" class="holly_img" onmouseover="displayExploreData(event)" onmouseout="hideExploreData(event)" onclick="loadExplorationData(event)" src="css/images/leisure.jpg">
+                <mark style="visibility: hidden;" id="leisureLabel" class="lead overlay"><i>"my favorite show aired a new, exciting episode"</i></mark>
+                </a>
+                </div>
+              </th>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section: Data Exploration Results -->
+      <section class="step" id="data_exploration_results">
+        <br><br>
+        <div id="filter_by_category" class="hideExploreDiv">
+          <h2 class="lead">Here are happy moments we found in the <b><mark id="explore_chosen_category"></mark></b> category.<br>
+            You can also filter happy moments based on demographics using the panel on the side. If you would not like to filter by a demographic, simply leave that filter blank.
+          </h2>
+        </div>
+        <div id="notEnoughData" style="color: indianred; visibility: hidden;">
+          Sorry, we found no happy moments for the filters you've requested. Please try other filters.
+        </div>
+        <br>
+        <div style="width: 100%; display: table;">
+        <div style="display: table-row">
+        <div class="jumbotron" style="width: 35%; float: left; display: table-cell;">
+            <h3>Demographic Filters</h3><br>
+            <!-- Country -->
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" for="country-explore">country:</label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <select class="form-control col-sm-5" id="country-explore" onclick="changeDemographicOptions()">
+                <option selected value="none"></option>
+                <option value="AUS">Australia</option>
+                <option value="BRA">Brazil</option>
+                <option value="CAN">Canada</option>
+                <option value="IND">India</option>
+                <option value="MEX">Mexico</option>
+                <option value="NGA">Nigeria</option>
+                <option value="USA">USA</option>
+                <option value="GBR">United Kingdom</option>
+                <option value="VEN">Venezuela</option>
+                <option value="PHL">Philippines</option>
+              </select>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" for="gender-explore">gender:</label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <select class="form-control col-sm-5" id="gender-explore" onclick="changeDemographicOptions()">
+                <option selected value="none"></option>
+                <option value="f">female</option>
+                <option value="m">male</option>
+                <option value="o">other gender</option>
+              </select>
+            </div>
+
+            <!-- Marital Status -->
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" for="marital-status-explore">marital&nbsp;status:</label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <select class="form-control col-sm-5" id="marital-status-explore" onclick="changeDemographicOptions()">
+                <option selected value="none"></option>
+                <option value="single">single</option>
+                <option value="married">married</option>
+                <option value="divorced">divorced</option>
+                <option value="separated">separated</option>
+                <option value="widowed">widowed</option>
+              </select>
+            </div>
+
+            <!-- Parenthood Status -->
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" for="parenthood-explore">parenthood:</label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <select class="form-control col-sm-5" id="parenthood-explore" onclick="changeDemographicOptions()">
+                <option selected value="none"></option>
+                <option value="n">not a parent</option>
+                <option value="y">parent</option>
+              </select>
+            </div>
+
+            <!-- Age -->
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" for="age-explore">age:</label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <select class="form-control col-sm-5" id="age-explore" onclick="changeDemographicOptions()">
+                <!-- value is lower limit of age group -->
+                <option selected value="none"></option>
+                <option value="0">0-10</option>
+                <option value="10">11-20</option>
+                <option value="20">21-30</option>
+                <option value="30">31-40</option>
+                <option value="40">41-50</option>
+                <option value="50">51-60</option>
+                <option value="60">61-70</option>
+                <option value="70">71-80</option>
+                <option value="80">81-90</option>
+                <option value="90">91-100</option>
+              </select>
+            </div>
+          <button onclick="filterExplorationData(event)" type="button" class="btn btn-dark" id="explore-demographic">
+            See More Moments
+          </button>
+        </div>
+
+        <div id="filtered_happy_moments" style="width: 62%; float: right; border-radius: 5px; display: table-cell;">
+          <ul>
+            <li>
+              <a href="#" class="invalidLink categoryColor">
+                <p id="sticky3"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink categoryColor">
+                <p id="sticky2"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink categoryColor">
+                <p id="sticky1"></p>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <a href="#" class="invalidLink categoryColor">
+                <p id="sticky6"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink categoryColor">
+                <p id="sticky5"></p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="invalidLink categoryColor">
+                <p id="sticky4"></p>
+              </a>
+            </li>
+          </ul>
+        </div>
+        </div>
+        <br><br><br>
+        </div>
+
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Load JS scripts -->
+<script src="scripts/survey.js"></script>
+<script src="scripts/d3.layout.cloud.js"></script>
+<script src="scripts/demographics2.js" crossorigin="anonymous"></script>
+<script src="scripts/wordcloud.js"></script>
+<script src="scripts/self-discovery.js"></script>
+<script src="scripts/data_exploration.js"></script>
+
+<!-- for fadein effect -->
+<script src="scripts/fadein.js"></script>
+<script src="scripts/movingLetters.js"></script>
+
+
+</body>
+</html>

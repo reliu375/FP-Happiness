@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+
+<!-- Import D3 -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
+<!-- Import CSV data management packages-->
+<script src="https://d3js.org/d3-dsv.v1.min.js" ></script>
+<script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+
+<script src="../scripts/d3-format.js"></script>
+<script src="../scripts/d3.layout.cloud.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+
+<style>
+  text:hover { opacity: .7 !important; }
+</style>
+
+</head>
+
+<body>
+  <div id="choose-words"></div>
+
+  <script type="text/javascript">
+    window.addEventListener("load",function(){
+      generate({
+      container: '#choose-words',});
+    },false);
+  </script>
+<script>
+
+
+var container = "svg";
+var w = 700;
+var h = 600;
+var layout;
+var focus;
+var margin;
+var svg;
+
+function generate(options) {
+  console.log('calling generate()')
+  var wordSize = 12;
+
+  margin = {top: 10, right: 10, bottom: 0, left: 10},
+    w = 1200 - margin.left - margin.right,
+    h = 400 - margin.top - margin.bottom;
+
+  svg = d3.select(options.container).append("svg")
+          .attr('height', h + margin.top + margin.bottom)
+          .attr('width', w + margin.left + margin.right)
+
+  focus = svg.append('g')
+            .attr("transform", "translate(" + [w/2, h/2+margin.top] + ")")
+
+
+  // TODO: adjust file path
+  var file = "../data/self-discovery/select-words.json"
+
+  d3.json(file, function(d) {
+    return d;
+  }).then(function(data) {
+
+    var list_of_words = data;
+
+    var length = list_of_words.length;
+
+    for (var t = 0; t < length; t++) {
+      var timing = (20*t) + 100;
+      list_of_words[t].time = timing;
+    }
+
+    var sizeScale = d3.scaleLinear()
+                      .domain([0, d3.max(list_of_words, function(d) { return d.freq })])
+                      .range([10,25]) // adjust this to show more/less number of words
+
+    layout = d3.layout.cloud().size([w, h])
+                    .words(list_of_words)
+                    .padding(5)
+                    .rotate(function() { return ~~(Math.random() * 2) * 90; })
+                    .font("Impact")
+                    .fontSize(function(d) { return sizeScale(d.freq); }) // constant freq
+                    .on("end",draw)
+                    .start();
+    console.log('list of words: ', list_of_words)
+  });
+}
+
+function draw(words) {
+  console.log('calling draw()')
+  var fill = d3.scaleOrdinal(d3.schemeSet2);
+
+
+  // TODO: add onclick & unclick actions
+  focus.selectAll("text")
+      .data(words)
+      .enter().append("text")
+      .style("font-size", function(d) { return d.size + "px"; })
+      .style("font-family", "Impact")
+      .style("fill", function(d, i) { return fill(i); })
+      .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+          return "rotate(" + d.rotate + ")";
+          })
+      .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+      .text(function(d) { return d.word; });
+}
+
+
+</script>
+
+</body>
+
+
+</html>

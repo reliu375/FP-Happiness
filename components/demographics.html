@@ -1,0 +1,70 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demographics</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="./scripts/demographics.js"></script>
+</head>
+
+<body>
+    <div class="demographics">
+        <h1> Demographics </h1>
+        <figure>
+            <input type="image" src="./css/images/country.png" id="country" alt="unclicked" class="icon" onclick="toggle(this)" onmouseover="displayChart(this)">
+            <!-- <img src="./css/images/country.png" alt="country" class="icon"> -->
+            <figcaption> country </figcaption>
+        </figure>
+        <figure>
+            <input type="image" src="./css/images/gender.png" id="gender" alt="unclicked" class="icon" onclick="toggle(this)">
+            <!-- <img src="./css/images/gender.png" alt="gender" class="icon"> -->
+            <figcaption> gender </figcaption>
+        </figure>
+        <figure>
+            <input type="image" src="./css/images/married.png" id="married" alt="unclicked" class="icon" onclick="toggle(this)">
+            <!-- <img src="./css/images/married.png" alt="married" class="icon"> -->
+            <figcaption> marital status </figcaption>
+        </figure>
+        <figure>
+            <input type="image" src="./css/images/kids.png" id="kids" class="icon" alt="unclicked" onclick="toggle(this)">
+            <!-- <img src="./css/images/kids.png" alt="kids" class="icon"> -->
+            <figcaption> parenthood </figcaption>
+        </figure>
+        <figure>
+            <input type="image" src="./css/images/age.png" id="age" alt="unclicked" class="icon" onclick="toggle(this)">
+            <!-- <img src="./css/images/age.png" alt="age" class="icon"> -->
+            <figcaption> age </figcaption>
+        </figure>
+    </div>
+    <div id="demographicsChart">
+        <script>
+            var margin = {top: 25, right: 20, bottom: 50, left: 80},
+                width = 960 - margin.left - margin.right,
+                height = 390 - margin.top - margin.bottom;
+
+                // set the ranges
+                var x = d3.scaleBand()
+                        .range([0, width])
+                        .padding(0.1);
+                var y = d3.scaleLinear()
+                        .range([height, 0]);
+                        
+                // append the svg object to the body of the page
+                // append a 'group' element to 'svg'
+                // moves the 'group' element to the top left margin
+                var svg = d3.select("#demographicsChart").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                    .attr("transform", 
+                        "translate(" + margin.left + "," + margin.top + ")");
+                
+                d3.select("#demographicsChart").attr("align","center");
+        </script>
+    </div> 
+</body>
+
+</html>

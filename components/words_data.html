@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="scripts/d3.layout.cloud.js"></script>>
+<!-- <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script> -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/lib/alea.min.js"></script>
+<script src="scripts/wordcloud.js"></script>
+
+<style>
+  text:hover { opacity: .7 !important; }
+  .label-background-strong {
+    fill: white;
+    fill-opacity: .8;
+  }
+  svg text{
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+  }
+</style>
+
+</head>
+
+<body>
+  <!-- <button type="button" id="button" onclick="generate()">show</button> -->
+  <div id="cloud-container"></div>
+  <script>
+    generate({
+      container: '#cloud-container',
+      topic: 'school'
+    });
+</script>
+
+</body>
+
+
+</html>
