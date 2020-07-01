@@ -1,19 +1,19 @@
-# FP-Happiness
+# Happy Moments: 6.894 Final Project
 
 ![Summary image](css/images/repo.png)
 
 What makes people happy? What topics do people write about to describe happiness? What words do people use to express happiness? These are the questions we seek to investigate through this visualization.
 
 ## Team Members:
-- Meryl Wang(mswang)
-- Renbin Liu(rbliu)
-- Stuti Vishwabhan(svishwab)
+- Meryl Wang(mswang@mit.edu)
+- Renbin Liu(rbliu@mit.edu)
+- Stuti Vishwabhan(svishwab@mit.edu)
 
 ## Link to Paper:
-Work in Progress...
+https://drive.google.com/file/d/1uDaCt6tr3lx5xVRDL0AK6tLD2fp5V3gX/view?usp=sharing
 
 ## Instructions for Running:
-Visit https://github.mit.edu/pages/6894-sp20/FP-Happiness/. No other installations required.
+Visit https://reliu375.github.io/Happy-Moments/. No other installations required.
 
 ## Video Demo
 https://www.youtube.com/watch?v=KwQGZLy3-8k&feature=youtu.be
